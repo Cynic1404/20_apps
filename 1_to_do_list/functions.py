@@ -19,7 +19,7 @@ class Table(Base):
         return self.task
 
 
-def add_row(string_to_check='', task='This is string field!', deadline=datetime.today().date(), ):
+def add_row(string_to_check='', task='This is string field!', deadline=datetime.today().date(), gui_string=''):
     # session = connect_db()
     # new_row = Table(task=task, deadline=deadline)
     # session.add(new_row)
@@ -28,7 +28,10 @@ def add_row(string_to_check='', task='This is string field!', deadline=datetime.
     if string_to_check:
         todo = string_to_check[4:] + "\n"
     else:
-        todo = input("Enter a todo: ") + "\n"
+        if gui_string:
+            todo = gui_string+"\n"
+        else:
+            todo = input("Enter a todo: ") + "\n"
     todos.append(todo)
     write_file(todos)
 
