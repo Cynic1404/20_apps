@@ -99,6 +99,7 @@ def show_ennumerated_tasks(file_name='files/todos.txt'):
         return tasks
     else:
         print('The list is empty')
+        return []
 
 
 def weeks_tasks():
