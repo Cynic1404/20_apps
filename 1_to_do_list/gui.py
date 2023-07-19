@@ -9,9 +9,8 @@ edit_button = sg.Button("Edit")
 delete_button = sg.Button("Delete")
 list_box = sg.Listbox(values=functions.show_ennumerated_tasks(), size=[45, 10], key='tasks', enable_events=True)
 
-content = [[lable, input_box, add, clear_button], [list_box, edit_button, delete_button]]
-layout = [content]
-window = sg.Window('To-Do list', layout=content, font=("Helvetica", 20))
+layout = [[lable, input_box, add, clear_button], [list_box, edit_button, delete_button]]
+window = sg.Window('To-Do list', layout=layout, font=("Helvetica", 20))
 
 
 def clear_input():
