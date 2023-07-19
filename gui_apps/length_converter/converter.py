@@ -16,8 +16,7 @@ def pop_up_notification(text):
     return sg.popup_ok(text, title="Error", font=("Helvetica", 20))
 
 def convert(feet, inch):
-    feet=float(feet)+float(inch)/12
-    return round(float(feet)/3.281, 3)
+    return feet * 0.3048 + inch * 0.0254
 
 while True:
     event, values = window.read()
@@ -32,7 +31,7 @@ while True:
             elif not feet.isdigit() or not inch.isdigit():
                 pop_up_notification("It takes only digits")
             else:
-                result.update(f"{convert(feet, inch)}m")
+                result.update(f"{round(convert(float(feet), float(inch)), 3)}m")
     if event == sg.WIN_CLOSED:
             break
 
