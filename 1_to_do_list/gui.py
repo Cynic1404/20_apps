@@ -71,7 +71,7 @@ while True:
         case "Delete":
             if values['tasks']:
                 todo_to_delete = values['tasks'][0]
-                if delete_confirmation(todo_to_delete) == "OK":
+                if delete_confirmation(todo_to_delete.replace('\n',"")) == "OK":
                     todos = functions.show_ennumerated_tasks()
                     index = todos.index(todo_to_delete)
                     todos.pop(index)
