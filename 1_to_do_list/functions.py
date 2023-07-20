@@ -1,20 +1,6 @@
 import os
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Date
-
 
 completed = []
-Base = declarative_base()
-
-
-class Table(Base):
-    __tablename__ = 'task'
-    id = Column(Integer, primary_key=True)
-    task = Column(String)
-    deadline = Column(Date)
-
-    def __repr__(self):
-        return self.task
 
 
 def add_row(string_to_check='', gui_string=''):
