@@ -5,11 +5,14 @@ lable = sg.Text("Type to do")
 input_box = sg.InputText(tooltip="Enter todo", key="todo")
 add = sg.Button("Add")
 clear_button = sg.Button("Clear")
+complete_button = sg.Button("Complete")
 edit_button = sg.Button("Edit")
 delete_button = sg.Button("Delete")
+completed_tasks_text = sg.Multiline(functions.show_ennumerated_tasks(file_name='files/finished.txt', as_string=True), size=[45,10])
+clear_finished_tasks_list_button = sg.Button("Clear the list")
 list_box = sg.Listbox(values=functions.show_ennumerated_tasks(), size=[45, 10], key='tasks', enable_events=True)
 
-layout = [[lable, input_box, add, clear_button], [list_box, edit_button, delete_button]]
+layout = [[lable],[input_box], [add, clear_button], [list_box],[complete_button, edit_button, delete_button], [completed_tasks_text], [clear_finished_tasks_list_button]]
 window = sg.Window('To-Do list', layout=layout, font=("Helvetica", 20))
 
 
@@ -23,11 +26,17 @@ def delete_confirmation(todo_to_delete):
     print(event)
     return event
 
+def clear_finish_tasks_list():
+    event = sg.popup_ok_cancel(f"Do you want to clear the finished tasks list", "Press cancel to stop",
+                               title="Are you sure?")
+    print(event)
+    return event
 
 while True:
     event, values = window.read()
-    print(event)
-    print(values)
+    # print(event)
+    # print(values)
+    completed_tasks_text.update(functions.show_ennumerated_tasks(file_name='files/finished.txt', as_string=True))
     match event:
         case "Add":
             if values["todo"] != '':
@@ -36,16 +45,30 @@ while True:
                 window['tasks'].update(functions.show_ennumerated_tasks())
         case "Clear":
             clear_input()
-        case "Edit":
-            todo_to_edit = values['tasks'][0]
-            if values['todo']:
-                new_todo = values['todo']
+        case "Complete":
+            if values['tasks']:
+                todo_to_complete = values['tasks'][0]
                 todos = functions.show_ennumerated_tasks()
-                index = todos.index(todo_to_edit)
-                todos[index] = new_todo + "\n"
+                completed_tasks = functions.show_ennumerated_tasks(file_name='files/finished.txt')
+                index = todos.index(todo_to_complete)
+                completed_tasks.append(todos.pop(index))
                 functions.write_file(todos)
+                functions.write_file(text=completed_tasks, filename='files/finished.txt')
                 window['tasks'].update(functions.show_ennumerated_tasks())
                 clear_input()
+                completed_tasks_text.update(
+                    functions.show_ennumerated_tasks(file_name='files/finished.txt', as_string=True))
+        case "Edit":
+            if values['tasks']:
+                todo_to_edit = values['tasks'][0]
+                if values['todo']:
+                    new_todo = values['todo']
+                    todos = functions.show_ennumerated_tasks()
+                    index = todos.index(todo_to_edit)
+                    todos[index] = new_todo + "\n"
+                    functions.write_file(todos)
+                    window['tasks'].update(functions.show_ennumerated_tasks())
+                    clear_input()
         case "Delete":
             if values['tasks']:
                 todo_to_delete = values['tasks'][0]
@@ -56,6 +79,10 @@ while True:
                     functions.write_file(todos)
                     window['tasks'].update(functions.show_ennumerated_tasks())
                     clear_input()
+        case "Clear the list":
+            if clear_finish_tasks_list() == "OK":
+                functions.write_file(text="", filename='files/finished.txt')
+                completed_tasks_text.update(functions.show_ennumerated_tasks(file_name='files/finished.txt', as_string=True))
 
         case sg.WIN_CLOSED:
             break

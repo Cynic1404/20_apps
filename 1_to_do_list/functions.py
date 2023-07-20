@@ -91,14 +91,18 @@ def show_missed_tasks():
     print_rows(rows)
 
 
-def show_ennumerated_tasks(file_name='files/todos.txt'):
+def show_ennumerated_tasks(file_name='files/todos.txt', as_string=False):
     tasks = read_file(file_name)
     if tasks:
         for index, item in enumerate(tasks):
             print(f"{index + 1}) {item}")
+        if as_string:
+            return " ".join(tasks)
         return tasks
     else:
         print('The list is empty')
+        if as_string:
+            return ""
         return []
 
 
