@@ -36,7 +36,6 @@ while True:
     event, values = window.read()
     # print(event)
     # print(values)
-    completed_tasks_text.update(functions.show_ennumerated_tasks(file_name='files/finished.txt', as_string=True))
     match event:
         case "Add":
             if values["todo"] != '':
