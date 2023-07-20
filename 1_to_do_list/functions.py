@@ -1,13 +1,11 @@
 import os
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date
-from datetime import datetime, timedelta
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 
 completed = []
 Base = declarative_base()
+
 
 class Table(Base):
     __tablename__ = 'task'
@@ -19,30 +17,20 @@ class Table(Base):
         return self.task
 
 
-def add_row(string_to_check='', task='This is string field!', deadline=datetime.today().date(), gui_string=''):
-    # session = connect_db()
-    # new_row = Table(task=task, deadline=deadline)
-    # session.add(new_row)
-    # session.commit()
+def add_row(string_to_check='', gui_string=''):
     todos = read_file()
     if string_to_check:
         todo = string_to_check[4:] + "\n"
     else:
         if gui_string:
-            todo = gui_string+"\n"
+            todo = gui_string + "\n"
         else:
             todo = input("Enter a todo: ") + "\n"
     todos.append(todo)
     write_file(todos)
 
 
-def show_tasks(date=None):
-    # if date:
-    #     rows = connect_db().query(Table).filter(Table.deadline == datetime.strptime(date, '%Y-%m-%d').date()).all()
-    # else:
-    #     rows = connect_db().query(Table).order_by(Table.deadline).all()
-    # print_rows(rows)
-    # return rows
+def show_tasks():
     show_ennumerated_tasks(file_name='files/todos.txt')
 
 
@@ -85,12 +73,6 @@ def show_finished_tasks():
     show_ennumerated_tasks(file_name='files/finished.txt')
 
 
-def show_missed_tasks():
-    rows = connect_db().query(Table).filter(Table.deadline < datetime.date(datetime.today())).order_by(
-        Table.deadline).all()
-    print_rows(rows)
-
-
 def show_ennumerated_tasks(file_name='files/todos.txt', as_string=False):
     tasks = read_file(file_name)
     if tasks:
@@ -106,24 +88,6 @@ def show_ennumerated_tasks(file_name='files/todos.txt', as_string=False):
         return []
 
 
-def weeks_tasks():
-    for i in range(7):
-        print((datetime.today() + timedelta(days=i)).strftime('%A %d %b'))
-        show_tasks(date=(datetime.today() + timedelta(days=i)).strftime('%Y-%m-%d'))
-
-
-def delete_task():
-    delete_session = connect_db()
-    rows = delete_session.query(Table).order_by(Table.deadline).all()
-    if len(rows) == 0:
-        print('Nothing to delete \n')
-    else:
-        print('Chose the number of the task you want to delete:')
-        print_rows(rows)
-        row_to_delete = rows[int(input('')) - 1]
-        delete_session.delete(row_to_delete)
-        delete_session.commit()
-
 
 def print_rows(rows):
     if len(rows) == 0:
@@ -133,12 +97,6 @@ def print_rows(rows):
             print(f'{str(i + 1)}. {str(rows[i])} {rows[i].deadline.strftime("%d %b")}')
     print('\n')
 
-
-def connect_db():
-    engine = create_engine('sqlite:///todo.db?check_same_thread=False')
-    Base.metadata.create_all(engine)
-    session = sessionmaker(bind=engine)
-    return session()
 
 
 def show(tasks_list):
