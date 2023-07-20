@@ -65,7 +65,7 @@ def show_ennumerated_tasks(file_name='files/todos.txt', as_string=False):
         for index, item in enumerate(tasks):
             print(f"{index + 1}) {item}")
         if as_string:
-            return " ".join(tasks)
+            return "".join(tasks)
         return tasks
     else:
         print('The list is empty')
