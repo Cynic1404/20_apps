@@ -52,8 +52,8 @@ def complete():
             print("Wrong number")
 
 
-def show_finished_tasks():
-    show_tasks(file_name='files/finished.txt', print_ennumerated=True)
+def show_finished_tasks(print_ennumerated=True):
+    return show_tasks(file_name='files/finished.txt', print_ennumerated=print_ennumerated)
 
 
 def show_tasks(file_name='files/todos.txt', as_string=False, print_ennumerated=False):
@@ -66,7 +66,8 @@ def show_tasks(file_name='files/todos.txt', as_string=False, print_ennumerated=F
             return "".join(tasks)
         return tasks
     else:
-        print('The list is empty')
+        if print_ennumerated:
+            print('The list is empty')
         if as_string:
             return ""
         return []
