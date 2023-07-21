@@ -8,7 +8,7 @@ import functions
 if __name__ == '__main__':
     while True:
         print(datetime.datetime.now().strftime("It's %B %d, %H:%M"))
-        option = input('Type add, show, or exit \n')
+        option = input('Type add, show, edit, complete, finished or exit \n')
         if option.startswith("add") and len(option.split()) > 1:
             functions.add_row(string_to_check=option)
         else:
@@ -16,7 +16,7 @@ if __name__ == '__main__':
                 case "add":
                     functions.add_row()
                 case "show":
-                    functions.show_tasks()
+                    functions.show_tasks(print_ennumerated=True)
                 case "edit":
                     functions.edit()
                 case "complete":

@@ -16,13 +16,10 @@ def add_row(string_to_check='', gui_string=''):
     write_file(todos)
 
 
-def show_tasks():
-    show_ennumerated_tasks(file_name='files/todos.txt')
-
 
 def edit():
     print("Choose what to edit")
-    todos = show_ennumerated_tasks()
+    todos = show_tasks()
     while True:
         edit_option = input("Type number or 'cancel'")
         if edit_option.isdigit() and int(edit_option) - 1 <= len(todos):
@@ -41,7 +38,7 @@ def edit():
 def complete():
     while True:
         print("Choose what to complete")
-        todos = show_ennumerated_tasks()
+        todos = show_tasks(print_ennumerated=True)
         complete_option = input("Type number")
         if complete_option.isdigit() and int(complete_option) - 1 <= len(todos):
             completed = read_file('files/finished.txt')
@@ -56,14 +53,15 @@ def complete():
 
 
 def show_finished_tasks():
-    show_ennumerated_tasks(file_name='files/finished.txt')
+    show_tasks(file_name='files/finished.txt', print_ennumerated=True)
 
 
-def show_ennumerated_tasks(file_name='files/todos.txt', as_string=False):
+def show_tasks(file_name='files/todos.txt', as_string=False, print_ennumerated=False):
     tasks = read_file(file_name)
     if tasks:
-        for index, item in enumerate(tasks):
-            print(f"{index + 1}) {item}")
+        if print_ennumerated:
+            for index, item in enumerate(tasks):
+                print(f"{index + 1}) {item}")
         if as_string:
             return "".join(tasks)
         return tasks
