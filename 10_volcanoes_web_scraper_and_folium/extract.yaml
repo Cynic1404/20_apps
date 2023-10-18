@@ -1,0 +1,4 @@
+tours:
+  multiple: true
+  css: ".view-content tbody>tr>td"
+#  xpath: "\li"
